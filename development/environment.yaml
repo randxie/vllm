@@ -13,5 +13,7 @@ dependencies:
   - libcusolver-dev
   - libcusparse
   - pytorch-gpu
+  - ray
   - transformers
+  - tokenizers>=0.13.3
   - thrust
