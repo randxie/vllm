@@ -72,11 +72,29 @@ if nvcc_cuda_version >= Version("11.2"):
 
 ext_modules = []
 
+def get_cuda_include_dirs():
+    return [
+        f"/home/randxie/anaconda3/envs/vllm/lib/python3.9/site-packages/nvidia/{p}/include" for p in [
+            "cublas",
+            "cuda_cupti",
+            "cuda_nvrtc",
+            "cuda_runtime",
+            "cusolver",
+            "cudnn",
+            "cufft",
+            "curand",
+            "cusparse",
+            "nccl",
+            "nvtx",
+        ]
+    ]
+
 # Cache operations.
 cache_extension = CUDAExtension(
     name="vllm.cache_ops",
     sources=["csrc/cache.cpp", "csrc/cache_kernels.cu"],
     extra_compile_args={"cxx": CXX_FLAGS, "nvcc": NVCC_FLAGS},
+    include_dirs=get_cuda_include_dirs(),
 )
 ext_modules.append(cache_extension)
 
@@ -85,6 +103,7 @@ attention_extension = CUDAExtension(
     name="vllm.attention_ops",
     sources=["csrc/attention.cpp", "csrc/attention/attention_kernels.cu"],
     extra_compile_args={"cxx": CXX_FLAGS, "nvcc": NVCC_FLAGS},
+    include_dirs=get_cuda_include_dirs(),
 )
 ext_modules.append(attention_extension)
 
@@ -93,6 +112,7 @@ positional_encoding_extension = CUDAExtension(
     name="vllm.pos_encoding_ops",
     sources=["csrc/pos_encoding.cpp", "csrc/pos_encoding_kernels.cu"],
     extra_compile_args={"cxx": CXX_FLAGS, "nvcc": NVCC_FLAGS},
+    include_dirs=get_cuda_include_dirs(),
 )
 ext_modules.append(positional_encoding_extension)
 
@@ -101,6 +121,7 @@ layernorm_extension = CUDAExtension(
     name="vllm.layernorm_ops",
     sources=["csrc/layernorm.cpp", "csrc/layernorm_kernels.cu"],
     extra_compile_args={"cxx": CXX_FLAGS, "nvcc": NVCC_FLAGS},
+    include_dirs=get_cuda_include_dirs(),
 )
 ext_modules.append(layernorm_extension)
 
@@ -109,6 +130,7 @@ activation_extension = CUDAExtension(
     name="vllm.activation_ops",
     sources=["csrc/activation.cpp", "csrc/activation_kernels.cu"],
     extra_compile_args={"cxx": CXX_FLAGS, "nvcc": NVCC_FLAGS},
+    include_dirs=get_cuda_include_dirs(),
 )
 ext_modules.append(activation_extension)
 
