@@ -1,19 +1,16 @@
 name: vllm
 channels:
-  - defaults
   - nvidia/label/cuda-11.7.1
   - conda-forge
+  - defaults
 dependencies:
   - python=3.9
   - cub
-  - cuda-nvcc=11.7
-  - cuda-runtime=11.7
-  - cudatoolkit=11.7
+  - cuda-nvcc
   - cudnn=8.1.0
   - libcusolver-dev
   - libcusparse
-  - pytorch-gpu
-  - ray
-  - transformers
-  - tokenizers>=0.13.3
   - thrust
+  - pip
+  - pip:
+      - -r requirements.txt

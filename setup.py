@@ -1,13 +1,14 @@
+from torch.utils.cpp_extension import BuildExtension, CUDAExtension, CUDA_HOME
+import torch
+import setuptools
+from packaging.version import parse, Version
+from typing import List, Set
+import subprocess
+import re
 import io
 import os
-import re
-import subprocess
-from typing import List, Set
+os.environ["CUDA_HOME"] = "/home/randxie/anaconda3/envs/vllm"
 
-from packaging.version import parse, Version
-import setuptools
-import torch
-from torch.utils.cpp_extension import BuildExtension, CUDAExtension, CUDA_HOME
 
 ROOT_DIR = os.path.dirname(__file__)
 
@@ -52,7 +53,8 @@ if not compute_capabilities:
     compute_capabilities = {70, 75, 80, 86, 90}
 # Add target compute capabilities to NVCC flags.
 for capability in compute_capabilities:
-    NVCC_FLAGS += ["-gencode", f"arch=compute_{capability},code=sm_{capability}"]
+    NVCC_FLAGS += ["-gencode",
+                   f"arch=compute_{capability},code=sm_{capability}"]
 
 # Validate the NVCC CUDA version.
 nvcc_cuda_version = get_nvcc_cuda_version(CUDA_HOME)
@@ -72,6 +74,7 @@ if nvcc_cuda_version >= Version("11.2"):
 
 ext_modules = []
 
+
 def get_cuda_include_dirs():
     return [
         f"/home/randxie/anaconda3/envs/vllm/lib/python3.9/site-packages/nvidia/{p}/include" for p in [
@@ -88,6 +91,7 @@ def get_cuda_include_dirs():
             "nvtx",
         ]
     ]
+
 
 # Cache operations.
 cache_extension = CUDAExtension(
