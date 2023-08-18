@@ -49,6 +49,14 @@ for i in range(device_count):
             "GPUs with compute capability less than 7.0 are not supported.")
     compute_capabilities.add(major * 10 + minor)
 
+# If no GPU is available, add all supported compute capabilities.
+if not compute_capabilities:
+    compute_capabilities = {70, 75, 80, 86, 90}
+# Add target compute capabilities to NVCC flags.
+for capability in compute_capabilities:
+    NVCC_FLAGS += ["-gencode",
+                   f"arch=compute_{capability},code=sm_{capability}"]
+
 # Validate the NVCC CUDA version.
 nvcc_cuda_version = get_nvcc_cuda_version(CUDA_HOME)
 if nvcc_cuda_version < Version("11.0"):
