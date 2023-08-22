@@ -248,6 +248,7 @@ _STR_DTYPE_TO_TORCH_DTYPE = {
     "float": torch.float32,
     "float32": torch.float32,
     "bfloat16": torch.bfloat16,
+    "int8": torch.int8,
 }
 
 

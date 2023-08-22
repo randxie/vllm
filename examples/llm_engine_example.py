@@ -6,6 +6,7 @@ from vllm import EngineArgs, LLMEngine, SamplingParams
 def main(args: argparse.Namespace):
     # Parse the CLI argument and initialize the engine.
     engine_args = EngineArgs.from_cli_args(args)
+    engine_args.dtype = 'int8'
     engine = LLMEngine.from_engine_args(engine_args)
 
     # Test the following prompts.
@@ -48,4 +49,5 @@ if __name__ == '__main__':
         description='Demo on using the LLMEngine class directly')
     parser = EngineArgs.add_cli_args(parser)
     args = parser.parse_args()
+
     main(args)
