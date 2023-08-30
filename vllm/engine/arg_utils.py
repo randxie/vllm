@@ -29,6 +29,9 @@ class EngineArgs:
     max_num_seqs: int = 256
     disable_log_stats: bool = False
 
+    # the directory caching model weights
+    cache_dir: Optional[str] = None
+
     def __post_init__(self):
         if self.tokenizer is None:
             self.tokenizer = self.model

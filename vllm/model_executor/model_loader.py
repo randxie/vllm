@@ -43,6 +43,7 @@ def _get_model_architecture(config: PretrainedConfig) -> Type[nn.Module]:
 def get_model(model_config: ModelConfig) -> nn.Module:
     model_class = _get_model_architecture(model_config.hf_config)
     if model_config.dtype == torch.int8:
+        # torch only allow float16 or float32 as default type
         torch.set_default_dtype(torch.float16)
     else:
         torch.set_default_dtype(model_config.dtype)
