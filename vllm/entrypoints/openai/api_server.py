@@ -439,16 +439,14 @@ async def create_chat_completion(request: ChatCompletionRequest,
         return await completion_full_generator()
 
 
-def custom_byte_encoder(obj):
-    if isinstance(obj, bytes):
-        # When the data contains bytes, it may not be a valid utf-8 string.
-        # Because the generation process may cut a valid utf-8 string in the middleware
-        # Therefore, we encode the bytes to hex string to avoid encoding error
-        try:
-            return obj.decode("utf-8")
-        except UnicodeDecodeError:
-            return f"bytes:{obj.hex()}"
-    raise TypeError
+def custom_byte_encoder(obj: bytes) -> str:
+    # When the data contains bytes, it may not be a valid utf-8 string.
+    # Because the generation process may cut a valid utf-8 string in the middleware
+    # Therefore, we encode the bytes to hex string to avoid encoding error
+    try:
+        return obj.decode("utf-8")
+    except UnicodeDecodeError:
+        return f"bytes:{obj.hex()}"
 
 @app.post("/v1/completions")
 async def create_completion(request: CompletionRequest, raw_request: Request):
@@ -723,7 +721,7 @@ async def create_completion(request: CompletionRequest, raw_request: Request):
                                  media_type="text/event-stream")
 
     # we will encode response with custom encoder to avoid encoding error
-    response_str = jsonable_encoder(response, custom_encoder=custom_byte_encoder) 
+    response_str = jsonable_encoder(response, custom_encoder={bytes: custom_byte_encoder}) 
 
     return response_str
 
