@@ -10,6 +10,7 @@ from http import HTTPStatus
 from typing import AsyncGenerator, Dict, List, Optional, Tuple, Union
 
 from aioprometheus import MetricsMiddleware
+from fastapi.encoders import jsonable_encoder
 from aioprometheus.asgi.starlette import metrics
 import fastapi
 import uvicorn
